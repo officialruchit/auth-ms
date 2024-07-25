@@ -4,7 +4,7 @@ dotenv.config();
 
 class authservice {
   static viewProfile = async (id: string) => {
-    const user = await model.findById(id);
+    const user = await model.findById(id).select("-password");
     if (!user) {
       throw new Error("user not found");
     }
