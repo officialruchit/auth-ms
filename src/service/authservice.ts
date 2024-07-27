@@ -1,11 +1,11 @@
-import User from "../model/usersModel";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import RabbitMQService from "./rabbitmqService";
-import dotenv from "dotenv";
-import crypto from "crypto";
+import User from '../model/usersModel';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import RabbitMQService from './rabbitmqService';
+import dotenv from 'dotenv';
+import crypto from 'crypto';
 dotenv.config();
-import smsService from "./smsService";
+import smsService from './smsService';
 class AuthService {
   static async signUp(data: {
     phoneNumber?: string;
@@ -14,7 +14,7 @@ class AuthService {
     password: string;
     firstName: string;
     lastName: string;
-    authMethod: "sms" | "email";
+    authMethod: 'sms' | 'email';
   }) {
     const {
       username,
@@ -25,10 +25,11 @@ class AuthService {
       lastName,
       authMethod,
     } = data;
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = crypto.randomInt(100000, 999999).toString();
     if (!email && !phoneNumber) {
-      throw new Error("Either email or phone number must be provided.");
+      throw new Error('Either email or phone number must be provided.');
     }
     const user = new User({
       username,
@@ -44,18 +45,19 @@ class AuthService {
       },
     });
     await user.save();
-    if (authMethod === "sms" && phoneNumber) {
+
+    if (authMethod === 'sms' && phoneNumber) {
       await smsService.sendOtp(phoneNumber, otp);
     }
     const rabbitMQ = await RabbitMQService.getInstance();
-    await rabbitMQ.publish("verificationQueue", { email: user.email });
+    await rabbitMQ.publish('verificationQueue', { email: user.email });
 
     const token = jwt.sign(
       { userId: user.id, role: user.roles },
       process.env.JWT_SECRET as string,
       {
-        expiresIn: "23h",
-      }
+        expiresIn: '23h',
+      },
     );
     return token;
   }

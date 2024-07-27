@@ -3,11 +3,13 @@ import AuthService from '../service/signinService';
 
 const signin = async (req: Request, res: Response) => {
   try {
+    const id: string = (req as any).userId;
     const { email, password } = req.body;
-    const message = await AuthService.signin(email, password);
-    res.json({ message });
+    console.log(email, password, 'from controller');
+    const message = await AuthService.signin(id, email, password);
+    res.status(200).json({ message });
   } catch (err) {
-    res.status(400).json({ err });
+    res.status(400).json(err);
   }
 };
 

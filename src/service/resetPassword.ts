@@ -1,20 +1,33 @@
-import model from "../model/usersModel";
-import RabbitMQService from "./rabbitmqService";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-class authservice {
-  static resetPassword = async (token: string, newpassword: string) => {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      id: string;
-    };
-    const user = await model.findById(decoded.id);
-    if (!user) {
-      throw new Error("User not found");
+import model from '../model/usersModel';
+import mailService from './mailService';
+import RabbitMQService from './rabbitmqService';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+class AuthService {
+  static resetPassword = async (token: string, newPassword: string) => {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+        userId: string;
+      };
+      const user = await model.findById(decoded.userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      user.password = await bcrypt.hash(newPassword, 10);
+      await user.save();
+
+      await mailService.newpasswordQueue(user.email);
+
+      const rabbitMQ = await RabbitMQService.getInstance();
+      await rabbitMQ.publish('newPasswordQueue', { email: user.email });
+
+      console.log('Password reset successful');
+    } catch (error) {
+      throw new Error('Invalid or expired token');
     }
-    user.password = await bcrypt.hash(newpassword, 10);
-    await user.save();
-    const rabbitMQ = await RabbitMQService.getInstance();
-    await rabbitMQ.publish("newpasswordQueue", { email: user.email });
   };
 }
-export default authservice;
+
+export default AuthService;

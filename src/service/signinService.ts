@@ -1,26 +1,24 @@
-import User from "../model/usersModel";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import RabbitMQService from "./rabbitmqService";
-import dotenv from "dotenv";
+import mdoel from '../model/usersModel';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import RabbitMQService from './rabbitmqService';
+import dotenv from 'dotenv';
 dotenv.config();
 
 class AuthService {
-  static async signin(email: string, password: string) {
-    const user = await User.findOne({ email });
+  static async signin(id: string, email: string, password: string) {
+    const user = await mdoel.findById(id);
     if (!user) {
-      throw new Error("User not found");
+      throw new Error('user not found');
     }
-
-    const ismatch = await bcrypt.compare(password, user.password);
-    if (!ismatch) {
-      throw new Error("Invalid credentials");
+    if (user.email !== email) {
+      throw new Error('invalid email');
     }
-
-    //    const rabbitMQ = await RabbitMQService.getInstance();
-    // await rabbitMQ.publish('verificationQueue', { email: user.email });
-
-    return "succesufully login";
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new Error('Invalid credentials');
+    }
+    return 'succesufully login';
   }
 }
 
