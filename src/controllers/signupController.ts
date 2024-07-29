@@ -21,7 +21,7 @@ const signup = async (req: Request, res: Response) => {
       phoneNumber,
       authMethod,
     });
-    res.json({ token });
+    res.json({ "message":"seccessfully signup"});
   } catch (err) {
     res.status(400).json({ err });
   }

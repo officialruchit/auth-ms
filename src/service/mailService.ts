@@ -100,5 +100,20 @@ class MailService {
       }
     });
   }
+
+  async enableTwoFA(email: string,otp:string) {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Verify your email for enableTwoFA',
+      text: `Hi \n\nthis is your ${otp}. verify otp for signin\n\nBest regards,\nYour Company`,
+    };
+
+    await this.transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  }
 }
 export default new MailService();

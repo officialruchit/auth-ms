@@ -6,11 +6,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 class AuthService {
-  static async signin(id: string, email: string, password: string) {
-    const user = await mdoel.findById(id);
+  static async signin( email: string, password: string) {
+    const user = await mdoel.findOne({ email });
     if (!user) {
       throw new Error('user not found');
+      
     }
+    console.log(user)
     if (user.email !== email) {
       throw new Error('invalid email');
     }
@@ -18,7 +20,8 @@ class AuthService {
     if (!isMatch) {
       throw new Error('Invalid credentials');
     }
-    return 'succesufully login';
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+    return { token };
   }
 }
 

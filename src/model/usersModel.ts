@@ -3,6 +3,7 @@ import { Schema, model, Document } from 'mongoose';
 interface ITwoFA {
   enabled: boolean;
   method: 'sms' | 'email' | 'authenticator';
+  secret?: string;
   otp?: string;
   otpExpiry?: Date;
 }
@@ -36,6 +37,7 @@ interface IUser extends Document {
 const TwoFASchema = new Schema({
   enabled: { type: Boolean, default: false },
   method: { type: String, enum: ['sms', 'email', 'authenticator'] },
+  secret: { type: String },
   otp: { type: String },
   otpExpiry: { type: Date },
 });
@@ -52,7 +54,7 @@ const ProfileSchema = new Schema({
 
 const UserSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true , match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/},
   phoneNumber: { type: String },
   password: { type: String, required: true },
   twoFA: TwoFASchema,
