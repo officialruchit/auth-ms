@@ -7,6 +7,9 @@ class authservice {
     if (!user) {
       throw new Error('user not found');
     }
+    if (!user.isActive) {
+      throw new Error('User is inactive');
+    }
     const otp = randomInt(100000, 999999).toString();
     user.twoFA = {
       enabled: true,
@@ -15,10 +18,10 @@ class authservice {
       otpExpiry: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
     };
     await mailService.sendEmailOtp(email, otp);
-   
+
     await user.save();
   };
-  
+
   static verifyEmailOtpAndUpdate = async (id: string, otp: string, email: string) => {
     const user = await model.findById(id);
     if (!user) {
@@ -47,7 +50,7 @@ class authservice {
     const userObject = user.toObject();
     delete userObject.twoFA.otp;
     delete userObject.twoFA.otpExpiry;
-  
+
 
     return userObject;
   };

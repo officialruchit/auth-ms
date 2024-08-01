@@ -7,7 +7,8 @@ const verifyOtp = async (req: Request, res: Response) => {
     const message = await AuthService.verifyOtp({ email, phoneNumber, otp });
     res.json({ message });
   } catch (err) {
-    res.status(400).json(err);
+    const error = err as Error
+    res.status(400).json({ message: error.message });
   }
 };
 export default verifyOtp;

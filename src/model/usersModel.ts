@@ -8,14 +8,19 @@ interface ITwoFA {
   otpExpiry?: Date;
 }
 
-interface IProfile {
-  firstName: string;
-  lastName: string;
-  address?: string;
+interface IAddress {
+  line1?: string;
+  line2?: string;
   city?: string;
   state?: string;
   country?: string;
   zipCode?: string;
+}
+
+interface IProfile {
+  firstName: string;
+  lastName: string;
+  address: IAddress;
 }
 
 interface IUser extends Document {
@@ -30,6 +35,7 @@ interface IUser extends Document {
   profile: IProfile;
   emailVerified: boolean;
   phoneVerified: boolean;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,15 +47,18 @@ const TwoFASchema = new Schema({
   otp: { type: String },
   otpExpiry: { type: Date },
 });
-
-const ProfileSchema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  address: { type: String },
+const AddressSchema = new Schema({
+  line1: { type: String },
+  line2: { type: String },
   city: { type: String },
   state: { type: String },
   country: { type: String },
   zipCode: { type: String },
+});
+const ProfileSchema = new Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  address:AddressSchema
 });
 
 const UserSchema = new Schema<IUser>({
@@ -64,6 +73,7 @@ const UserSchema = new Schema<IUser>({
   profile: ProfileSchema,
   emailVerified: { type: Boolean, default: false },
   phoneVerified: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

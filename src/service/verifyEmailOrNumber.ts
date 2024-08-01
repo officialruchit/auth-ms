@@ -13,6 +13,9 @@ class authservice {
     if (!user) {
       throw new Error('User not found');
     }
+    if (!user.isActive) {
+      throw new Error('User is inactive');
+    }
     if (email && user.email !== email) {
       throw new Error('Email does not match');
     }
@@ -37,7 +40,7 @@ class authservice {
     email?: string,
     phoneNumber?: string,
   ) => {
-    console.log(otp,email)
+    console.log(otp, email)
     const user = await model.findById(id);
     if (!user) {
       throw new Error('User not found');

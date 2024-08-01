@@ -11,8 +11,10 @@ const signup = async (req: Request, res: Response) => {
       firstName,
       lastName,
       authMethod,
+      roles,
+      address: { line1, line2, city, state, country, zipCode },
     } = req.body;
-    const token = await AuthService.signUp({
+    await AuthService.signUp({
       username,
       email,
       password,
@@ -20,10 +22,20 @@ const signup = async (req: Request, res: Response) => {
       lastName,
       phoneNumber,
       authMethod,
+      roles,
+      address: {
+        line1,
+        line2,
+        city,
+        state,
+        country,
+        zipCode,
+      },
     });
-    res.json({ "message":"seccessfully signup"});
+    res.json({ "message": "seccessfully signup" });
   } catch (err) {
-    res.status(400).json({ err });
+    const error = err as Error
+    res.status(400).json({ message: error.message });
   }
 };
 

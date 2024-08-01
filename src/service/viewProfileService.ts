@@ -8,6 +8,9 @@ class authservice {
     if (!user) {
       throw new Error('user not found');
     }
+    if(!user.isActive){
+      throw new Error('User is inactive');
+    }
     const userObject = user.toObject();
     delete userObject.twoFA.otp;
     delete userObject.twoFA.otpExpiry;

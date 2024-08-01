@@ -3,13 +3,13 @@ import Jwt from 'jsonwebtoken';
 
 interface JwtPayload {
   userId: string;
-  role: string;
+  roles: string;
 }
 
 declare module 'express-serve-static-core' {
   interface Request {
     userId?: string;
-    role?: string;
+    roles?: string;
   }
 }
 
@@ -25,7 +25,8 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
       process.env.JWT_SECRET as string,
     ) as JwtPayload;
     req.userId = decode.userId;
-    req.role = decode.role;
+    req.roles = decode.roles;
+    console.log(req.roles)
     next();
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });

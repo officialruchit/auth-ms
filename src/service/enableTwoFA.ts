@@ -15,6 +15,9 @@ class authService {
         if (!user) {
             throw new Error('User not found');
         }
+        if (!user.isActive) {
+            throw new Error('User is inactive');
+        }
 
         if (method === 'authenticator') {
             const secret = speakeasy.generateSecret({ length: 20 });
@@ -40,7 +43,7 @@ class authService {
                     to: user.phoneNumber!
                 });
             } else if (method === 'email') {
-                mailService.enableTwoFA(user.email,otp)
+                mailService.enableTwoFA(user.email, otp)
             }
         }
 

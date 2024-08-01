@@ -7,7 +7,8 @@ const updatePhoneNumber = async (req: Request, res: Response) => {
         await authservice.updatePhoneNumber(id, phoneNumber);
         res.status(200).json('successfully send otp please check your mobile');
     } catch (err) {
-        res.status(400).json(err);
+        const error = err as Error
+        res.status(400).json({ message: error.message });
     }
 };
 export default updatePhoneNumber;

@@ -14,6 +14,9 @@ class AuthService {
       if (!user) {
         throw new Error('User not found');
       }
+      if (!user.isActive) {
+        throw new Error('User is inactive');
+      }
 
       user.password = await bcrypt.hash(newPassword, 10);
       await user.save();

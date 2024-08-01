@@ -6,20 +6,33 @@ class authservice {
     profile: {
       firstName: string;
       lastName: string;
-      address?: string;
-      city?: string;
-      state?: string;
-      country?: string;
-      zipCode?: string;
+      address: {
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        country?: string;
+        zipCode?: string;
+      };
     },
   ) => {
     const user = await model.findById(id);
 
     if (!user) {
-      throw new Error('user not fount');
+      throw new Error('User not found');
     }
-    user.profile = profile;
-    user.save();
+    if (!user.isActive) {
+      throw new Error('User is inactive');
+    }
+
+    user.profile.firstName = profile.firstName;
+    user.profile.lastName = profile.lastName;
+    user.profile.address = {
+      ...user.profile.address,
+      ...profile.address,
+    };
+
+    await user.save();
 
     return user;
   };

@@ -86,7 +86,7 @@ class MailService {
   }
 
 
-  async sendEmailOtp(email: string,otp:string) {
+  async sendEmailOtp(email: string, otp: string) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -101,7 +101,7 @@ class MailService {
     });
   }
 
-  async enableTwoFA(email: string,otp:string) {
+  async enableTwoFA(email: string, otp: string) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,

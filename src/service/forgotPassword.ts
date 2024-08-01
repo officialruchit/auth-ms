@@ -10,6 +10,9 @@ class AuthService {
       throw new Error('User not found');
     }
 
+    if (!user.isActive) {
+      throw new Error('User is inactive');
+    }
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET as string,

@@ -7,6 +7,9 @@ class authservice {
     if (!user) {
       throw new Error('user not found');
     }
+    if(!user.isActive){
+      throw new Error('User is inactive');
+    }
     const otp = randomInt(100000, 999999).toString();
     user.twoFA = {
       enabled: true,

@@ -4,10 +4,10 @@ import signin from '../controllers/signinController';
 import viewProfile from '../controllers/viewProfile';
 import updateProfile from '../controllers/updateProfile';
 import auth from '../middleware/auth';
-import {verifyEmailOrNumber,otpForEmailOrNumber} from '../controllers/verifyEmailOrNumber';
+import { verifyEmailOrNumber, otpForEmailOrNumber } from '../controllers/verifyEmailOrNumber';
 import forgotpassword from '../controllers/forgotPassword';
 import resetPassword from '../controllers/resetPassword';
-import {updateEmail,verifyEmail} from '../controllers/updateEmail';
+import { updateEmail, verifyEmail } from '../controllers/updateEmail';
 import verifyOtp from '../controllers/verifyotp';
 import updatePhoneNumber from '../controllers/updateNumber';
 import verifyotpForNumber from '../controllers/verifyOtpforNumber'
@@ -29,12 +29,12 @@ routes.post('/resetpassword', resetPassword);
 routes.post('/verify', verifyOtp);
 
 routes.post('/updateEmail', auth, updateEmail);
-routes.put('/updateEmail',auth,verifyEmail)
+routes.put('/updateEmail', auth, verifyEmail)
 
 routes.post('/updatePhoneNumber', auth, updatePhoneNumber);
-routes.put('/updatePhoneNumber',auth,verifyotpForNumber)
-routes.post('/enableTwoFA',auth,enableTwoFA)
-routes.post('/verifyTwoFA',verifyTwoFA)
+routes.put('/updatePhoneNumber', auth, verifyotpForNumber)
+routes.post('/enableTwoFA', auth, enableTwoFA)
+routes.post('/verifyTwoFA', verifyTwoFA)
 
 
 export default routes;

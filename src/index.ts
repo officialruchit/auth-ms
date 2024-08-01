@@ -2,7 +2,6 @@ import express from 'express';
 import db from './config/db';
 import authRoutes from './routes/authRoutes';
 import bodyParser from 'body-parser';
-
 const app = express();
 const PORT = 3333;
 db();
