@@ -30,7 +30,6 @@ class MailService {
     });
   }
 
-
   async sendVerificationEmailforVerifymailOrNumber(email: string) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -84,7 +83,6 @@ class MailService {
       }
     });
   }
-
 
   async sendEmailOtp(email: string, otp: string) {
     const mailOptions = {

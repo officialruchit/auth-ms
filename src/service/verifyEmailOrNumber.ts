@@ -8,6 +8,7 @@ class authservice {
     id: string,
     email: string,
     phoneNumber: string,
+    countryCode:string
   ) => {
     const user = await model.findById(id);
     if (!user) {
@@ -28,24 +29,25 @@ class authservice {
       await mailService.sendEmailOtp(email, otp);
       console.log(`OTP sent to email: ${email}`);
     }
-    if (phoneNumber) {
-      await smsService.sendOtp(phoneNumber, otp);
+    if (phoneNumber && countryCode) {
+      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+      await smsService.sendOtp(fullPhoneNumber, otp);
     }
     user.twoFA.otp = otp;
     await user.save();
   };
+
   static verifyOtp = async (
     id: string,
     otp: string,
     email?: string,
     phoneNumber?: string,
   ) => {
-    console.log(otp, email)
+    console.log(otp, email);
     const user = await model.findById(id);
     if (!user) {
       throw new Error('User not found');
     }
-    console.log(user)
     if (user.twoFA.otp !== otp) {
       throw new Error('Email OTP does not match');
     }

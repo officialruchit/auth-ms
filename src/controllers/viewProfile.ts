@@ -7,7 +7,7 @@ const viewProfile = async (req: Request, res: Response) => {
     const user = await authservice.viewProfile(id);
     res.status(200).json(user);
   } catch (err) {
-    const error = err as Error
+    const error = err as Error;
     res.status(400).json({ message: error.message });
   }
 };

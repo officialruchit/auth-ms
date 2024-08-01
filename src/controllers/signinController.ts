@@ -7,7 +7,7 @@ const signin = async (req: Request, res: Response) => {
     const message = await AuthService.signin(email, password);
     res.status(200).json({ message });
   } catch (err) {
-    const error = err as Error
+    const error = err as Error;
     res.status(400).json({ message: error.message });
   }
 };

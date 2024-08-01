@@ -6,7 +6,7 @@ const forgotPassword = async (req: Request, res: Response) => {
     await authservice.forgotPassword(email);
     res.status(200).json({ message: 'Password reset link sent' });
   } catch (err) {
-    const error = err as Error
+    const error = err as Error;
     res.status(400).json({ message: error.message });
   }
 };

@@ -7,6 +7,7 @@ const signup = async (req: Request, res: Response) => {
       username,
       email,
       phoneNumber,
+      countryCode,
       password,
       firstName,
       lastName,
@@ -21,6 +22,7 @@ const signup = async (req: Request, res: Response) => {
       firstName,
       lastName,
       phoneNumber,
+      countryCode,
       authMethod,
       roles,
       address: {
@@ -32,9 +34,9 @@ const signup = async (req: Request, res: Response) => {
         zipCode,
       },
     });
-    res.json({ "message": "seccessfully signup" });
+    res.json({ message: 'seccessfully signup' });
   } catch (err) {
-    const error = err as Error
+    const error = err as Error;
     res.status(400).json({ message: error.message });
   }
 };

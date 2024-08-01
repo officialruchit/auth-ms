@@ -6,9 +6,8 @@ const verifyTwoFA = async (req: Request, res: Response) => {
     const response = await authService.verifyTwoFA(id, token, otp);
     res.status(200).json(response);
   } catch (err) {
-    const error = err as Error
+    const error = err as Error;
     res.status(400).json({ message: error.message });
   }
 };
 export default verifyTwoFA;
-

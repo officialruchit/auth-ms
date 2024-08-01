@@ -27,6 +27,7 @@ interface IUser extends Document {
   username: string;
   email: string;
   phoneNumber?: string;
+  countryCode?: string;
   password: string;
   twoFA: ITwoFA;
   resetPasswordToken?: string;
@@ -58,13 +59,19 @@ const AddressSchema = new Schema({
 const ProfileSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  address:AddressSchema
+  address: AddressSchema,
 });
 
 const UserSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true , match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/},
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  },
   phoneNumber: { type: String },
+  countryCode: { type: String },
   password: { type: String, required: true },
   twoFA: TwoFASchema,
   resetPasswordToken: { type: String },

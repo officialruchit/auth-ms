@@ -8,7 +8,7 @@ class authservice {
     if (!user) {
       throw new Error('user not found');
     }
-    if(!user.isActive){
+    if (!user.isActive) {
       throw new Error('User is inactive');
     }
     const userObject = user.toObject();

@@ -6,7 +6,7 @@ class RabbitMQService {
   private connection!: amqp.Connection;
   private channel!: amqp.Channel;
 
-  private constructor() { }
+  private constructor() {}
 
   public static async getInstance() {
     if (!RabbitMQService.instance) {

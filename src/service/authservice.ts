@@ -8,8 +8,16 @@ dotenv.config();
 import smsService from './smsService';
 class AuthService {
   static async signUp(data: {
-    phoneNumber?: string; email?: string; username: string; password: string; firstName: string; lastName: string;
-    authMethod: 'sms' | 'email'; roles?: string, address: {
+    phoneNumber?: string;
+    countryCode?: string;
+    email?: string;
+    username: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    authMethod: 'sms' | 'email';
+    roles?: string;
+    address: {
       line1?: string;
       line2?: string;
       city?: string;
@@ -18,7 +26,19 @@ class AuthService {
       zipCode?: string;
     };
   }) {
-    const { username, email, phoneNumber, password, firstName, lastName, authMethod, roles, address } = data;
+
+    const {
+      username,
+      email,
+      phoneNumber,
+      countryCode,
+      password,
+      firstName,
+      lastName,
+      authMethod,
+      roles,
+      address,
+    } = data;
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = crypto.randomInt(100000, 999999).toString();
@@ -28,6 +48,7 @@ class AuthService {
     const user = new User({
       username,
       phoneNumber,
+      countryCode,
       email,
       password: hashedPassword,
       profile: {
@@ -42,16 +63,16 @@ class AuthService {
         otpExpiry: new Date(Date.now() + 10 * 60000),
       },
       isActive: true,
-      roles
+      roles,
     });
     await user.save();
-    console.log(roles)
-    if (authMethod === 'sms' && phoneNumber) {
-      await smsService.sendOtp(phoneNumber, otp);
+    
+    if (authMethod === 'sms' && phoneNumber && countryCode) {
+      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+      await smsService.sendOtp(fullPhoneNumber, otp);
     }
     const rabbitMQ = await RabbitMQService.getInstance();
     await rabbitMQ.publish('verificationQueue', { email: user.email });
-
   }
 }
 

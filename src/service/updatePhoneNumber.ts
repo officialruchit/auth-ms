@@ -2,12 +2,12 @@ import model from '../model/usersModel';
 import { randomInt } from 'crypto';
 import smsService from './smsService';
 class authservice {
-  static updatePhoneNumber = async (id: string, phoneNumber: string) => {
+  static updatePhoneNumber = async (id: string, phoneNumber: string,countryCode:string) => {
     const user = await model.findById(id);
     if (!user) {
       throw new Error('user not found');
     }
-    if(!user.isActive){
+    if (!user.isActive) {
       throw new Error('User is inactive');
     }
     const otp = randomInt(100000, 999999).toString();
@@ -17,12 +17,16 @@ class authservice {
       otp,
       otpExpiry: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
     };
-    await smsService.sendOtp(phoneNumber, otp);
+    const fullPhoneNumber=`${countryCode}${phoneNumber}`
+    await smsService.sendOtp(fullPhoneNumber, otp);
     await user.save();
   };
 
-  static verifyPhoneOtpAndUpdate = async (id: string, otp: string, phoneNumber: string) => {
-
+  static verifyPhoneOtpAndUpdate = async (
+    id: string,
+    otp: string,
+    phoneNumber: string,
+  ) => {
     const user = await model.findById(id);
     if (!user) {
       throw new Error('User not found');
@@ -43,7 +47,6 @@ class authservice {
     const userObject = user.toObject();
     delete userObject.twoFA.otp;
     delete userObject.twoFA.otpExpiry;
-    
 
     return userObject;
   };

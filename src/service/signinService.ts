@@ -11,7 +11,7 @@ class AuthService {
     if (!user) {
       throw new Error('user not found');
     }
-    console.log(user)
+    console.log(user);
     if (user.email !== email) {
       throw new Error('invalid email');
     }
@@ -19,8 +19,12 @@ class AuthService {
     if (!isMatch) {
       throw new Error('Invalid credentials');
     }
-    const token = jwt.sign({ userId: user.id, roles: user.roles }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-    console.log()
+    const token = jwt.sign(
+      { userId: user.id, roles: user.roles },
+      process.env.JWT_SECRET as string,
+      { expiresIn: '1h' },
+    );
+
     return { token };
   }
 }

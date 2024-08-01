@@ -22,7 +22,11 @@ class authservice {
     await user.save();
   };
 
-  static verifyEmailOtpAndUpdate = async (id: string, otp: string, email: string) => {
+  static verifyEmailOtpAndUpdate = async (
+    id: string,
+    otp: string,
+    email: string,
+  ) => {
     const user = await model.findById(id);
     if (!user) {
       throw new Error('User not found');
@@ -50,7 +54,6 @@ class authservice {
     const userObject = user.toObject();
     delete userObject.twoFA.otp;
     delete userObject.twoFA.otpExpiry;
-
 
     return userObject;
   };

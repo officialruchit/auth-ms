@@ -7,10 +7,9 @@ const enableTwoFA = async (req: Request, res: Response) => {
     const response = await authService.enableTwoFA(id, method);
     res.status(200).json(response);
   } catch (err) {
-    const error = err as Error
+    const error = err as Error;
     res.status(400).json({ message: error.message });
   }
 };
 
 export default enableTwoFA;
-
