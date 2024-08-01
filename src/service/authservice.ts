@@ -26,7 +26,6 @@ class AuthService {
       zipCode?: string;
     };
   }) {
-
     const {
       username,
       email,
@@ -66,7 +65,7 @@ class AuthService {
       roles,
     });
     await user.save();
-    
+
     if (authMethod === 'sms' && phoneNumber && countryCode) {
       const fullPhoneNumber = `${countryCode}${phoneNumber}`;
       await smsService.sendOtp(fullPhoneNumber, otp);

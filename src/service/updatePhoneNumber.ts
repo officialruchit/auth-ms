@@ -2,7 +2,11 @@ import model from '../model/usersModel';
 import { randomInt } from 'crypto';
 import smsService from './smsService';
 class authservice {
-  static updatePhoneNumber = async (id: string, phoneNumber: string,countryCode:string) => {
+  static updatePhoneNumber = async (
+    id: string,
+    phoneNumber: string,
+    countryCode: string,
+  ) => {
     const user = await model.findById(id);
     if (!user) {
       throw new Error('user not found');
@@ -17,7 +21,7 @@ class authservice {
       otp,
       otpExpiry: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
     };
-    const fullPhoneNumber=`${countryCode}${phoneNumber}`
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`;
     await smsService.sendOtp(fullPhoneNumber, otp);
     await user.save();
   };

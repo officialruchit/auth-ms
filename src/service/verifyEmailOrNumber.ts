@@ -8,7 +8,7 @@ class authservice {
     id: string,
     email: string,
     phoneNumber: string,
-    countryCode:string
+    countryCode: string,
   ) => {
     const user = await model.findById(id);
     if (!user) {

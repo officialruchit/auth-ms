@@ -4,8 +4,8 @@ import authservice from '../service/verifyEmailOrNumber';
 export const verifyEmailOrNumber = async (req: Request, res: Response) => {
   try {
     const id: string = (req as any).userId;
-    const { email, phoneNumber,countryCode } = req.body;
-    await authservice.verifyEmailOrNumber(id, email, phoneNumber,countryCode);
+    const { email, phoneNumber, countryCode } = req.body;
+    await authservice.verifyEmailOrNumber(id, email, phoneNumber, countryCode);
     res.status(200).json({ message: 'successful send otp check your device' });
   } catch (err) {
     const error = err as Error;
