@@ -4,6 +4,10 @@ import mailService from './mailService';
 
 class AuthService {
   static forgotPassword = async (email: string) => {
+    if (!email) {
+      throw new Error('email is require');
+    }
+
     const user = await model.findOne({ email });
 
     if (!user) {

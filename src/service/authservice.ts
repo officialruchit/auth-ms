@@ -39,6 +39,12 @@ class AuthService {
       address,
     } = data;
 
+    if (password.length < 8) {
+      throw new Error('Password must be at least 8 characters long.');
+    }
+    if (phoneNumber && phoneNumber.length < 10) {
+      throw new Error('Phone number must be at least 10 digits long.');
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = crypto.randomInt(100000, 999999).toString();
     if (!email && !phoneNumber) {

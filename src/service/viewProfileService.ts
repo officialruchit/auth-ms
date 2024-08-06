@@ -14,7 +14,6 @@ class authservice {
     const userObject = user.toObject();
     delete userObject.twoFA.otp;
     delete userObject.twoFA.otpExpiry;
-
     return userObject;
   };
 }

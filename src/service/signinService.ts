@@ -7,11 +7,13 @@ dotenv.config();
 
 class AuthService {
   static async signin(email: string, password: string) {
+    //if (!email || password) {
+    //   throw new Error('please enter the email or password');
+    //}
     const user = await mdoel.findOne({ email });
     if (!user) {
       throw new Error('user not found');
     }
-    console.log(user);
     if (user.email !== email) {
       throw new Error('invalid email');
     }
@@ -22,11 +24,9 @@ class AuthService {
     const token = jwt.sign(
       { userId: user.id, roles: user.roles },
       process.env.JWT_SECRET as string,
-      { expiresIn: '1h' },
+      { expiresIn: '23h' },
     );
-
     return { token };
   }
 }
-
 export default AuthService;

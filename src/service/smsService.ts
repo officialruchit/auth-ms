@@ -5,14 +5,12 @@ import { Twilio } from 'twilio';
 
 class SmsService {
   private client: Twilio;
-
   constructor() {
     this.client = new Twilio(
       process.env.TWILIO_ACCOUNT_SID as string,
       process.env.TWILIO_AUTH_TOKEN as string,
     );
   }
-
   public async sendOtp(phoneNumber: string, otp: string) {
     try {
       const message = await this.client.messages.create({

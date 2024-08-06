@@ -17,16 +17,14 @@ class AuthService {
       if (!user.isActive) {
         throw new Error('User is inactive');
       }
-
+      if (!token) {
+        throw new Error('token is Required');
+      }
       user.password = await bcrypt.hash(newPassword, 10);
       await user.save();
-
       await mailService.newpasswordQueue(user.email);
-
       const rabbitMQ = await RabbitMQService.getInstance();
       await rabbitMQ.publish('newPasswordQueue', { email: user.email });
-
-      console.log('Password reset successful');
     } catch (error) {
       throw new Error('Invalid or expired token');
     }

@@ -4,6 +4,9 @@ import mailService from './mailService';
 class authservice {
   static updateEmail = async (id: string, email: string) => {
     const user = await model.findById(id);
+    if (!email) {
+      throw new Error('email is required');
+    }
     if (!user) {
       throw new Error('user not found');
     }

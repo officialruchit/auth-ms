@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import User from '../model/usersModel';
-
 dotenv.config();
-
 class AuthService {
   static async verifyOtp(data: {
     email?: string;

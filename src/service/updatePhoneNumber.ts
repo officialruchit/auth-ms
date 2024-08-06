@@ -1,12 +1,16 @@
 import model from '../model/usersModel';
 import { randomInt } from 'crypto';
 import smsService from './smsService';
+import { error } from 'console';
 class authservice {
   static updatePhoneNumber = async (
     id: string,
     phoneNumber: string,
     countryCode: string,
   ) => {
+    if (!phoneNumber || !countryCode) {
+      throw new Error('please enter the correct number or country code');
+    }
     const user = await model.findById(id);
     if (!user) {
       throw new Error('user not found');

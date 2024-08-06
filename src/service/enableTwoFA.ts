@@ -17,7 +17,14 @@ class authService {
     userId: string,
     method: 'sms' | 'email' | 'authenticator',
   ) {
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+    if (!method || !['sms', 'email', 'authenticator'].includes(method)) {
+      throw new Error('Invalid 2FA method');
+    }
     const user = await model.findById(userId);
+
     if (!user) {
       throw new Error('User not found');
     }

@@ -26,7 +26,6 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     ) as JwtPayload;
     req.userId = decode.userId;
     req.roles = decode.roles;
-    console.log(req.roles);
     next();
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });

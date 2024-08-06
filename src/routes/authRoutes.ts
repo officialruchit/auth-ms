@@ -16,11 +16,14 @@ import updatePhoneNumber from '../controllers/updateNumber';
 import verifyotpForNumber from '../controllers/verifyOtpforNumber';
 import enableTwoFA from '../controllers/2FAEnable';
 import verifyTwoFA from '../controllers/verifyTwoFA';
+import disableTwoFA from '../controllers/disbleTwoFa';
+
 const routes = Router();
 
 routes.post('/signup', signup);
 routes.post('/signin', signin);
 routes.get('/view', auth, viewProfile);
+routes.post('/disableTwoFA', auth, disableTwoFA);
 routes.put('/updateProfile', auth, updateProfile);
 routes.post('/verifyEmailOrNumber', auth, verifyEmailOrNumber);
 routes.put('/verifyEmailOrNumber', auth, otpForEmailOrNumber);
